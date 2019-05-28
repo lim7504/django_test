@@ -1,0 +1,104 @@
+<html>
+    <head>
+        <title>임재성 서버 테스트입니다.</title>
+        {% load static %}
+        <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+        <link href="{% static 'css/custom2.css' %}" rel="stylesheet">
+
+        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+        {% csrf_token %}
+        <div style="padding:10px; ">
+            <input id="email" value="" placeholder="email을 입력하세요">
+        </div>
+        <div style="padding:10px; ">
+            <input id="password" value="" placeholder="비밀번호를 입력하세요">
+        </div>
+        <div style="text-align:right; ">s
+            <button id="test" value="로그인">
+                button test
+            </button>
+        </div>
+
+
+        <script>
+
+            function getCookie(c_name)
+            {
+                if (document.cookie.length > 0)
+                {
+                    c_start = document.cookie.indexOf(c_name + "=");
+                    if (c_start != -1)
+                    {
+                        c_start = c_start + c_name.length + 1;
+                        c_end = document.cookie.indexOf(";", c_start);
+                        if (c_end == -1) c_end = document.cookie.length;
+                        return unescape(document.cookie.substring(c_start,c_end));
+                    }
+                }
+                return "";
+             }
+
+             function setCookie(cookie_name, value, days) {
+                  var exdate = new Date();
+                  exdate.setDate(exdate.getDate() + days);
+
+                  var cookie_value = escape(value) + ((days == null) ? '' : ';    expires=' + exdate.toUTCString());
+                  document.cookie = cookie_name + '=' + cookie_value;
+            }
+
+            $("#test").click(function(e){
+            e.preventDefault();
+                var email = $("#email").val();
+                var password = $("#password").val();
+
+                $.ajax({
+                    headers: { "X-CSRFToken": getCookie("csrftoken") },
+                    type: 'POST',
+                    url: '/test/',
+                    data: {
+                        'email': email,
+                        'password': password,
+
+                    },
+                    success: function(response){
+
+                        if(response.status != 200){
+                            alert("이메일과 비밀번호가 맞지 않습니다.");
+                            return;
+                        }
+
+                        setCookie('access_token', response.access_token, '3');
+
+                        $.ajax({
+                            headers: { "Authorization": "Bearer " + getCookie("access_token") },
+                            type: 'GET',
+                            url: '/test/main/',
+                            success: function(response){
+                                location.href = "/test/main/";
+                                alert("리다이렉트 성공!!");
+
+                            },
+                            error: function(request, status, error){
+                                alert("system error!!")
+                                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                            },
+                        });
+                    },
+                    error: function(request, status, error){
+                        alert("system error!!")
+                        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                    },
+                });
+            });
+
+
+
+
+        </script>
+    </body>
+</html>
+
+

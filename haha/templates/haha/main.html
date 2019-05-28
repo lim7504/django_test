@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>임재성 서버 테스트입니다.</title>
+        {% load static %}
+        <link href="{% static 'css/custom3.css' %}" rel="stylesheet">
+        <link href="{% static 'css/custom4.css' %}" rel="stylesheet">
+
+        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+        <div>메인 페이지 입니다</div>
+
+        <button id="move">
+            second page
+        </button>
+
+        <script>
+
+        $("#move").click(function(e){
+            e.preventDefault();
+            $.ajax({
+                type: 'GET',
+                url: '/test/second/',
+                success: function(response){
+                    location.href = "/test/second/";
+                    alert("리다이렉트 성공!!");
+
+                },
+                error: function(request, status, error){
+                    alert("system error!!")
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                },
+            });
+        });
+
+        </script>
+
+    </body>
+</html>
+
+
