@@ -23,11 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#o%7ob2wjemmup#y3@j+m+ukc^!)o9tr9!_vh9a1g_t&eemew!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = '*'
+ALLOWED_HOSTS = ['*'];
 
-# Application definition
+# Application definitions
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'haha',
 ]
 
 MIDDLEWARE = [
@@ -120,5 +121,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'.static_root')
 STATICFILES_DIRS = [
-	os.path.join(BASE_DIR,'blog/static/')
+	os.path.join(BASE_DIR,'blog/static/'),
+    os.path.join(BASE_DIR,'haha/static/'),
 ]
