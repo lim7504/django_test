@@ -194,5 +194,7 @@ dmypy.json
 
 
 .idea/
+.idea/workspace.xml
+
 /static/
 .static_root/
