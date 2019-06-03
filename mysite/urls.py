@@ -18,10 +18,12 @@ from django.urls import path
 from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.staticfiles.views import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', include('blog.urls')),
     path('haha/', include('haha.urls')),
+    
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
