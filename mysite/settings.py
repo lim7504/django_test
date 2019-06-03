@@ -124,3 +124,7 @@ STATICFILES_DIRS = [
 	os.path.join(BASE_DIR,'blog/static/'),
     os.path.join(BASE_DIR,'haha/static/'),
 ]
+
+
+MEDIA_URL = '/upload_files/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload_files')
