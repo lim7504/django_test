@@ -1,0 +1,54 @@
+<html>
+    <head>
+        {% load static %}
+        <title>임재성 서버 테스트입니다.</title>
+
+        <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+        <link href="{% static 'css/main.css' %}" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+
+        <div class="header">
+                <h1>
+                    메인화면
+                </h1>
+        </div>
+        <div style="display:grid; grid-template-columns:20% 1fr; height:800px;">
+            <div style="border:1px solid black;">
+
+                <div class="menu-item">
+                    <a href="{% url 'main' %}">
+                        메인화면
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a href="{% url 'mydata' %}">
+                        내정보 보기
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a href="{% url 'alltable' %}">
+                        유저 리스트 & 자격증 리스트
+                    </a>
+                </div>
+            </div>
+            <div id="contents">
+
+
+
+            </div>
+        </div>
+
+
+
+
+        <script src="{% static 'js/cookie.js' %}"></script>
+        <script src="{% static 'js/main.js' %}"></script>
+    </body>
+</html>
+
+

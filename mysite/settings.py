@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog',
     'account',
 ]
 
@@ -121,8 +120,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'.static_root')
 STATICFILES_DIRS = [
-	os.path.join(BASE_DIR,'blog/static/'),
-    os.path.join(BASE_DIR,'haha/static/'),
+    os.path.join(BASE_DIR,'account/static/'),
 ]
 
 

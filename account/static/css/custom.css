@@ -1,4 +1,35 @@
-body
+.menu-item
 {
-    background-color : yellow;
+    padding:5px;
+}
+
+table {
+    width: 100%;
+    border: 1px solid #444444;
+}
+th, td {
+    border: 1px solid #444444;
+}
+
+.input-area
+{
+    padding:10px;
+}
+
+.input-area input
+{
+    width:100%;
+}
+
+.apply-area
+{
+    text-align:right;
+}
+
+
+.header
+{
+    border:1px solid black;
+    height:90px;
+    text-align:center;
 }

@@ -1,0 +1,41 @@
+<html>
+    <head>
+        {% load static %}
+        {% csrf_token %}
+        <title>임재성 서버 테스트입니다.</title>
+        <link href="{% static 'css/login.css' %}" rel="stylesheet">
+        <!--<link href="http://192.168.111.140/static/css/custom.css" rel="stylesheet">-->
+        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+        <h1>로그인</h1>
+        <div id="contents">
+            <br>
+            <br>
+            <div class="input-area">
+                <label>Email : </label>
+                <input id="email" placeholder="email을 입력하세요">
+            </div>
+            <div class="input-area">
+                <label>Password : </label>
+                <input id="password" type="password" placeholder="비밀번호를 입력하세요">
+            </div>
+            <br>
+            <br>
+            <div class="apply-area">
+                <button id="login">
+                    login
+                </button>
+                <button id="join">
+                    join
+                </button>
+            </div>
+
+        </div>
+        <script src="{% static 'js/cookie.js' %}"></script>
+        <script src="{% static 'js/login.js' %}"></script>
+    </body>
+</html>
+
+
