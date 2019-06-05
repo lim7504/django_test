@@ -198,3 +198,4 @@ dmypy.json
 
 /static/
 .static_root/
+*.ini
