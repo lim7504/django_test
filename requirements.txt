@@ -1,0 +1,8 @@
+Django==2.0.13
+django-extensions==2.1.7
+djangorestframework==3.9.4
+drf-nested-routers==0.91
+PyJWT==1.7.1
+pytz==2019.1
+six==1.12.0
+
