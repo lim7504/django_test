@@ -15,6 +15,7 @@ class User(models.Model):
         ordering = ['-created_date']
 
 
+
 class Certificate(models.Model):
 
     user=models.ForeignKey(User, on_delete=models.CASCADE, null=False)
@@ -26,3 +27,4 @@ class Certificate(models.Model):
     class Meta:
         db_table = 'tbl_certificate'
         ordering = ['-created_date']
+

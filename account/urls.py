@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 
+
 from rest_framework_nested import routers
 
 router = routers.SimpleRouter()
@@ -19,6 +20,7 @@ certs_router.register(r'certs', views.CertViewSet, base_name='user-certs')
 # )
 
 
+
 urlpatterns = [
     path('', views.LoginView.as_view(), name="login"),
     path('main/', views.MainView.as_view(), name="main"),
@@ -26,7 +28,11 @@ urlpatterns = [
     path('mydata/', views.MyDataView.as_view(), name="mydata"),
     path('alltable/', views.AllTableView.as_view(), name="alltable"),
     path('filedownload/', views.FileDownload.as_view(), name="filedownload"),
+
 ]
 
 urlpatterns += router.urls
 urlpatterns += certs_router.urls
+
+
+

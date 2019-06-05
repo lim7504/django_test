@@ -8,6 +8,8 @@ import os
 import jwt
 from account.models import User
 from account.models import Certificate
+
+
 from django.core.files.storage import default_storage
 from functools import wraps
 from django.utils.decorators import method_decorator
@@ -21,9 +23,6 @@ from django.shortcuts import get_object_or_404
 from account.serializers import UserSerializer, CertificateSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
-
-
-
 
 
 
@@ -94,11 +93,13 @@ class JoinView(View):
         user_nick_name = request.POST.get('user_nick_name')
         user_password = request.POST.get('user_password')
 
+
         # cert_name_array = request.POST.getlist('cert_name_array[]')
         # cert_date_array = request.POST.getlist('cert_date_array[]')
         # cert_no_array = request.POST.getlist('cert_no_array[]')
 
         # print(cert_name_array)
+
 
         user = User.objects.filter(user_email=user_email).first()
 
@@ -138,18 +139,22 @@ class MainView(View):
 class MyDataView(View):
 
     @method_decorator(login_required)
+
     def get(self, request, email):
         user = User.objects.filter(user_email=email).first()
         certlist = Certificate.objects.all()
         return render(request, 'mydata.html', {'user': user, 'certlist': certlist})
 
 
+
 class AllTableView(View):
 
     @method_decorator(login_required)
     def get(self,request, email):
+
         userlist = User.objects.all()
         return render(request, 'alltable.html',{'userlist': userlist})
+
 
 
 
@@ -227,6 +232,7 @@ class CertViewSet(viewsets.ViewSet):
         certs = self.get_queryset().get(pk=pk, user=user_pk)
         serializer = CertificateSerializer(certs)
         return Response(serializer.data)
+
 
 
 

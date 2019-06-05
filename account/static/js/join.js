@@ -58,12 +58,14 @@ $("#join").on("click", function (e) {
     var user_password = $("#user-password").val();
     var user_password_confirm = $("#user-password-confirm").val();
 
+
 //    var cert_id_array = $("input[name='certificate_id']").map(function(){return $(this).val();}).get();
 //    var cert_name_array = $("select[name='certificate_name'] option:selected").map(function(){return $(this).val();}).get();
 //    var cert_date_array = $("input[name='acquisition_date']").map(function(){return $(this).val();}).get();
 //    var cert_no_array = $("input[name='certificate_no']").map(function(){return $(this).val();}).get();
 //    var cert_row_state_array = $("input[name='certificate_row_state']").map(function(){return $(this).val();}).get();
 //    alert(cert_name_array);
+
 
     if( user_email == "" )
     {
@@ -94,9 +96,11 @@ $("#join").on("click", function (e) {
     formData.append("user_email", user_email);
     formData.append("user_nick_name", user_nick_name);
     formData.append("user_password", user_password);
+
 //    formData.append("cert_name_array", cert_name_array);
 //    formData.append("cert_date_array", cert_date_array);
 //    formData.append("cert_no_array", cert_no_array);
+
 
 //    formData.append("upload_file", upload_file, upload_file.names);
     $.ajax({
@@ -113,7 +117,9 @@ $("#join").on("click", function (e) {
                 alert("같은 Email이 존재 합니다");
                 return;
             }
+
             alert("가입은 성공!!");
+
             setCookie('access_token', response.access_token, '3');
 
             $.ajax({
@@ -139,6 +145,7 @@ $("#join").on("click", function (e) {
         },
     });
 });
+
 
 
 
