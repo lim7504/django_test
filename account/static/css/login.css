@@ -1,0 +1,30 @@
+body
+{
+    //background-color : coral;
+
+}
+
+#contents
+{
+    text-align:center;
+    width:400px;
+    height:200px;
+    border:1px solid black;
+    margin: auto;
+}
+
+.input-area
+{
+    padding:10px;
+}
+
+.apply-area
+{
+    text-align:right;
+
+}
+
+h1
+{
+    text-align:center;
+}

@@ -1,0 +1,32 @@
+body
+{
+    //background-color : coral;
+
+}
+
+#contents
+{
+
+    width:50%;
+    border:1px solid black;
+    margin: auto;
+}
+
+.input-card
+{
+    margin-left:25%;
+    margin-right:25%;
+}
+
+
+.img-area
+{
+    width: 220px;
+    margin: auto;
+    text-align:center;
+}
+
+h1
+{
+    text-align:center;
+}
