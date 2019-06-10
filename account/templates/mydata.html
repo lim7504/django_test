@@ -45,18 +45,14 @@
                 <div class="input-card">
                     <label></label>
                     <br>
-                    <div >
-                        <img id="user-profile" src="{% static 'img/profile.png' %}" width="200" height="200">
+                    <div>
+                        <img id="user-profile" src="/upload_files/{{ user.pk }}/user_profile/{{ user.user_profile }}" width="200" height="200">
+                        <input id="imgInput" name="upload_file" type="file" accept=".jpg, .jpeg, .png" hidden>
                     </div>
+                    클릭하여 이미지를 수정 할 수 있습니다.
                 </div>
                 <br>
-                <div class="input-card">
-                    <label>Email</label>
-                    <br>
-                    <div class="input-area" >
-                        <input id="user-email" type="text" value="{{ user.user_email }}">
-                    </div>
-                </div>
+                <br>
                 <div class="input-card">
                     <label>Nick-Name </label>
                     <br>

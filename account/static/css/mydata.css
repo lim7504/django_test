@@ -1,9 +1,13 @@
 
-#contents
-{
+#contents{
     padding:20px;
-
 }
+
+#user-profile{
+    cursor: pointer;
+}
+
+
 
 table {
     width: 100%;

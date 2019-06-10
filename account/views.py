@@ -16,8 +16,6 @@ from django.utils.decorators import method_decorator
 from django.views.generic import DetailView
 
 
-
-
 # from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from account.serializers import UserSerializer, CertificateSerializer
@@ -25,18 +23,14 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 
-
-
 def login_required(f):
     @wraps(f)
     def decorated_function(request, *args, **kwargs):
         access_token = request.COOKIES.get('access_token')
+        context = {}
         if access_token is None:
-            print("Token is None!!")
-            context = {
-                'status': 400,
-                'message': "Token is None!!"
-            }
+            context['status'] = 400
+            context['message'] = "Token is None!!"
             return JsonResponse(context)
 
         try:
@@ -45,10 +39,8 @@ def login_required(f):
             payload = None
 
         if payload is None:
-            context = {
-                'status': 401,
-                'message': "Wrong Token!!"
-            }
+            context['status'] = 401
+            context['message'] = "Wrong Token!!"
             return JsonResponse(context)
 
         kwargs['email'] = payload['email']
@@ -66,21 +58,20 @@ class LoginView(View):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
+        context = {}
+
         user = User.objects.filter(user_email=email, user_password=password).first()
 
         if user is None:
-            context = {
-                'status': 400,
-                'message': "fail!!"
-            }
+            context['status'] = 400
+            context['message'] = "fail!!"
             return JsonResponse(context)
 
         token = jwt.encode({'email': email}, 'secret', algorithm='HS256')
-        context = {
-            'status': 200,
-            'message': "success!!",
-            'access_token' : token.decode('UTF-8')
-        }
+
+        context['status'] = 200
+        context['message'] = "success!!"
+        context['access_token'] = token.decode('UTF-8')
         return JsonResponse(context)
 
 class JoinView(View):
@@ -93,40 +84,47 @@ class JoinView(View):
         user_nick_name = request.POST.get('user_nick_name')
         user_password = request.POST.get('user_password')
 
+        upload_file = request.FILES.get('upload_file')
+        filename = upload_file._name
 
         # cert_name_array = request.POST.getlist('cert_name_array[]')
         # cert_date_array = request.POST.getlist('cert_date_array[]')
         # cert_no_array = request.POST.getlist('cert_no_array[]')
 
-        # print(cert_name_array)
-
+        context = {}
 
         user = User.objects.filter(user_email=user_email).first()
 
         if user is not None:
-            context = {
-                'status': 400,
-                'message': "fail!!"
-            }
+            context['status'] = 400
+            context['message'] = "같은 이메일 존재!!"
             return JsonResponse(context)
 
-        user = User(user_email=user_email
-                , user_password=user_password
-                , user_nick_name=user_nick_name)
-        user.save()
+        try:
+            user = User(user_email=user_email
+                        , user_password=user_password
+                        , user_nick_name=user_nick_name
+                        , user_profile=filename)
+            user.save()
 
-        # upload_file = request.FILES.get('upload_file')
-        # filename = upload_file._name
-        # with default_storage.open('upload_files/' + filename, 'wb+') as destination:
-        #     for chunk in upload_file.chunks():
-        #         destination.write(chunk)
+            if not os.path.exists(default_storage.base_url.replace('/', '') + '/' + str(user.pk) + '/user_profile'):
+                os.makedirs(default_storage.base_url.replace('/', '') + '/' + str(user.pk) + '/user_profile')
+
+            with default_storage.open(str(user.pk) + '/user_profile/' + filename, 'wb+') as destination:
+                for chunk in upload_file.chunks():
+                    destination.write(chunk)
+
+        except Exception as err:
+            print(str(err))
+            context['status'] = 500
+            context['message'] = "저장 에러!!"
+            return JsonResponse(context)
 
         token = jwt.encode({'email': user_email}, 'secret', algorithm='HS256')
-        context = {
-            'status': 200,
-            'message': "success!!",
-            'access_token': token.decode('UTF-8')
-        }
+
+        context['status'] = 200
+        context['message'] = "success!!"
+        context['access_token'] = token.decode('UTF-8')
         return JsonResponse(context)
 
 
@@ -139,13 +137,43 @@ class MainView(View):
 class MyDataView(View):
 
     @method_decorator(login_required)
-
     def get(self, request, email):
         user = User.objects.filter(user_email=email).first()
         certlist = Certificate.objects.all()
+
         return render(request, 'mydata.html', {'user': user, 'certlist': certlist})
 
+    @method_decorator(login_required)
+    def post(self, request, email):
+        user_nick_name = request.POST.get('user_nick_name')
+        upload_file = request.FILES.get('upload_file')
 
+        user = User.objects.filter(user_email=email).first()
+        context = {}
+        try:
+            user.user_nick_name = user_nick_name
+            if upload_file is not None:
+                filename = upload_file._name
+                user.user_profile=filename
+
+                if not os.path.exists(default_storage.base_url.replace('/', '') + '/' + str(user.pk) + '/user_profile'):
+                    os.makedirs(default_storage.base_url.replace('/', '') + '/' + str(user.pk) + '/user_profile')
+
+                with default_storage.open(str(user.pk) + '/user_profile/' + filename, 'wb+') as destination:
+                    for chunk in upload_file.chunks():
+                        destination.write(chunk)
+
+            user.save()
+
+        except Exception as err:
+            print(str(err))
+            context['status'] = 500
+            context['message'] = "저장 에러!!"
+            return JsonResponse(context)
+
+        context['status'] = 200
+        context['message'] = "success!!"
+        return JsonResponse(context)
 
 class AllTableView(View):
 
@@ -153,7 +181,10 @@ class AllTableView(View):
     def get(self,request, email):
 
         userlist = User.objects.all()
-        return render(request, 'alltable.html',{'userlist': userlist})
+        return render(request, 'alltable.html', {'userlist': userlist})
+
+
+
 
 
 

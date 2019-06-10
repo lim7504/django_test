@@ -12,6 +12,11 @@ body
     margin: auto;
 }
 
+#user-profile{
+    cursor: pointer;
+}
+
+
 .input-card
 {
     margin-left:25%;

@@ -51,15 +51,15 @@ $(".table-certificate-delete").on("click", function (e) {
 
 
 $("#join").on("click", function (e) {
-    var upload_file = $("#ingredient_file")[0].files[0];
 
     var user_email = $("#user-email").val();
     var user_nick_name = $("#user-nick-name").val();
     var user_password = $("#user-password").val();
     var user_password_confirm = $("#user-password-confirm").val();
 
+    var upload_file = $("#imgInput")[0].files[0];
 
-//    var cert_id_array = $("input[name='certificate_id']").map(function(){return $(this).val();}).get();
+//    var cert_id_array = $("input[name='certificate_id']").map(funsction(){return $(this).val();}).get();
 //    var cert_name_array = $("select[name='certificate_name'] option:selected").map(function(){return $(this).val();}).get();
 //    var cert_date_array = $("input[name='acquisition_date']").map(function(){return $(this).val();}).get();
 //    var cert_no_array = $("input[name='certificate_no']").map(function(){return $(this).val();}).get();
@@ -100,9 +100,7 @@ $("#join").on("click", function (e) {
 //    formData.append("cert_name_array", cert_name_array);
 //    formData.append("cert_date_array", cert_date_array);
 //    formData.append("cert_no_array", cert_no_array);
-
-
-//    formData.append("upload_file", upload_file, upload_file.names);
+    formData.append("upload_file", upload_file);
     $.ajax({
         headers: { "X-CSRFToken": getCookie("csrftoken") },
         async: true,
@@ -113,30 +111,13 @@ $("#join").on("click", function (e) {
         data: formData,
         success: function(response){
 
-            if(response.status == 400){
-                alert("같은 Email이 존재 합니다");
+            if(response.status != 200){
+                alert(response.message);
                 return;
             }
 
-            alert("가입은 성공!!");
-
             setCookie('access_token', response.access_token, '3');
-
-            $.ajax({
-                headers: { "Authorization": "Bearer " + getCookie("access_token") },
-                type: 'GET',
-                url: '/main/',
-                success: function(response){
-                    location.href = "/main/";
-                    <!--alert("리다이렉트 성공!!");-->
-
-                },
-                error: function(request, status, error){
-                    alert("system error!!")
-                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                },
-            });
-
+            location.href = "/main/";
 
         },
         error: function(request, status, error){
@@ -146,7 +127,22 @@ $("#join").on("click", function (e) {
     });
 });
 
+$("#user-profile").on("click", function (e) {
+//    e.preventDefault();
+    $("#imgInput").click();
+});
 
+$("#imgInput").on("change", function (e) {
+//    e.preventDefault();
+    if (this.files && this.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#user-profile').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(this.files[0]);
+    }
+});
 
 
 

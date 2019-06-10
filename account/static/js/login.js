@@ -19,21 +19,8 @@ $("#login").click(function(e){
             }
 
             setCookie('access_token', response.access_token, '3');
+            location.href = "/main/";
 
-            $.ajax({
-                headers: { "Authorization": "Bearer " + getCookie("access_token") },
-                type: 'GET',
-                url: '/main/',
-                success: function(response){
-                    location.href = "/main/";
-                    <!--alert("리다이렉트 성공!!");-->
-
-                    },
-                error: function(request, status, error){
-                    alert("system error!!")
-                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                },
-            });
         },
         error: function(request, status, error){
             alert("system error!!")
@@ -56,3 +43,33 @@ $("#join").click(function(e){
         },
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            $.ajax({
+//                headers: { "Authorization": "Bearer " + getCookie("access_token") },
+//                type: 'GET',
+//                url: '/main/',
+//                success: function(response){
+//                    location.href = "/main/";
+//                    <!--alert("리다이렉트 성공!!");-->
+//
+//                    },
+//                error: function(request, status, error){
+//                    alert("system error!!")
+//                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+//                },
+//            });
