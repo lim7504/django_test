@@ -201,3 +201,5 @@ dmypy.json
 .static_root/
 *.ini
 
+upload_files/
+
