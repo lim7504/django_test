@@ -27,7 +27,7 @@ urlpatterns = [
     path('join/', views.JoinView.as_view(), name="join"),
     path('mydata/', views.MyDataView.as_view(), name="mydata"),
     path('alltable/', views.AllTableView.as_view(), name="alltable"),
-    path('filedownload/', views.FileDownload.as_view(), name="filedownload"),
+    # path('filedownload/', views.FileDownload.as_view(), name="filedownload"),
 
 ]
 

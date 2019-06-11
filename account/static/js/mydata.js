@@ -43,7 +43,7 @@ $("#save").on("click", function (e) {
             }
 
             setCookie('access_token', response.access_token, '3');
-            location.href = "/main/";
+            location.href = "/mydata/";
 
         },
         error: function(request, status, error){

@@ -9,7 +9,6 @@ import jwt
 from account.models import User
 from account.models import Certificate
 
-
 from django.core.files.storage import default_storage
 from functools import wraps
 from django.utils.decorators import method_decorator
@@ -22,6 +21,9 @@ from account.serializers import UserSerializer, CertificateSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 
+import boto3
+import mysite.config as config
+import mysite.settings as settings
 
 def login_required(f):
     @wraps(f)
@@ -140,7 +142,6 @@ class MyDataView(View):
     def get(self, request, email):
         user = User.objects.filter(user_email=email).first()
         certlist = Certificate.objects.all()
-
         return render(request, 'mydata.html', {'user': user, 'certlist': certlist})
 
     @method_decorator(login_required)
@@ -153,15 +154,16 @@ class MyDataView(View):
         try:
             user.user_nick_name = user_nick_name
             if upload_file is not None:
-                filename = upload_file._name
-                user.user_profile=filename
+                directory_path = 'upload_files/' + str(user.pk) + '/user_profile/'
+                filename = upload_file.name
+                user.user_profile = config.S3_BUCKET_URL + directory_path + filename
 
-                if not os.path.exists(default_storage.base_url.replace('/', '') + '/' + str(user.pk) + '/user_profile'):
-                    os.makedirs(default_storage.base_url.replace('/', '') + '/' + str(user.pk) + '/user_profile')
-
-                with default_storage.open(str(user.pk) + '/user_profile/' + filename, 'wb+') as destination:
-                    for chunk in upload_file.chunks():
-                        destination.write(chunk)
+                s3 = boto3.client("s3"
+                                  , aws_access_key_id=config.S3_ACCESS_KEY
+                                  , aws_secret_access_key=config.S3_SECRET_KEY
+                                  )
+                s3.put_object(Bucket=config.S3_BUCKET, Key=( directory_path ))
+                s3.upload_fileobj(upload_file, config.S3_BUCKET, directory_path + filename)
 
             user.save()
 
@@ -194,18 +196,18 @@ class AllTableView(View):
 
 
 
-
-class FileDownload(View):
-
-    def get(self, request):
-        file_path = os.path.join(settings.MEDIA_ROOT, "abc.jpg")
-        if os.path.exists(file_path):
-            with open(file_path, 'rb') as fh:
-                response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-                return response
-        raise Http404
-
+#
+# class FileDownload(View):
+#
+#     def get(self, request):
+#         file_path = os.path.join(settings.MEDIA_ROOT, "abc.jpg")
+#         if os.path.exists(file_path):
+#             with open(file_path, 'rb') as fh:
+#                 response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+#                 response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+#                 return response
+#         raise Http404
+#
 
 
 
