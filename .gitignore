@@ -202,4 +202,4 @@ dmypy.json
 *.ini
 
 upload_files/
-.config.py
+config.py
