@@ -21,6 +21,7 @@ $("#login").click(function(e){
             setCookie('access_token', response.access_token, '3');
             location.href = "/main/";
 
+
         },
         error: function(request, status, error){
             alert("system error!!")

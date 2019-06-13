@@ -41,8 +41,6 @@ $("#save").on("click", function (e) {
                 alert(response.message);
                 return;
             }
-
-            setCookie('access_token', response.access_token, '3');
             location.href = "/mydata/";
 
         },
